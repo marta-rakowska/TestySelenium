@@ -9,4 +9,3 @@ class HomePage(BasePage):
     @property
     def loaded(self):
         return self.is_element_displayed(*self._welcome_header)
-
