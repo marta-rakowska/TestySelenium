@@ -2,6 +2,7 @@ from pypom import Page
 from selenium.webdriver.support.wait import WebDriverWait
 
 from config import config
+from pages.regions.footer_region import FooterRegion
 from pages.regions.menu_region import MenuRegion
 
 
@@ -14,4 +15,8 @@ class BasePage(Page):
     @property
     def menu(self):
         return MenuRegion(self)
+
+    @property
+    def footer(self):
+        return FooterRegion(self)
 

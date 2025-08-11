@@ -9,7 +9,7 @@ from pages.regions.menu_region import MenuRegion
 class StorePage(BasePage):
     # URL_TEMPLATE = "?post_type=product"
     _products_list = (By.CSS_SELECTOR, "ul[class='products columns-4']")
-    _product = (By.CSS_SELECTOR, "li[class='product type-product']")
+    _product = (By.CSS_SELECTOR, "li[class*='product type-product']")
 
     @property
     def loaded(self):
@@ -23,12 +23,12 @@ class StorePage(BasePage):
         find_item_by_name(self.items, item_name).click_add_to_cart_button()
 
         menu = MenuRegion(self)
-        assert menu.amount != "0,00"
+        self.wait.until(lambda page: menu.amount != "0,00", "Amount is equal to 0,00 after adding item to cart!")
 
 
 class Item(BaseRegion):
     _name = (By.CSS_SELECTOR, "h2[class*='woocommerce-loop-product']")
-    _add_to_cart_button = (By.CSS_SELECTOR, "a[class='add_to_cart_button']")
+    _add_to_cart_button = (By.CSS_SELECTOR, "a[class='button product_type_simple add_to_cart_button ajax_add_to_cart']")
 
     @property
     def name(self):

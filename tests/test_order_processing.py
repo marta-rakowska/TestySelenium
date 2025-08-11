@@ -1,5 +1,3 @@
-import time
-
 import pytest
 
 
@@ -11,6 +9,7 @@ from pages.store_page import StorePage
 class TestOrderProcessing:
     def test_order_product_as_a_guest(self, driver):
         home_page = HomePage(self.driver).open()
+        home_page.footer.click_dismiss_button()
         home_page.menu.open_store_page()
 
         store_page = StorePage(self.driver).wait_for_page_to_load()
