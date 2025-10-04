@@ -2,6 +2,7 @@ import pytest
 
 
 from pages.home_page import HomePage
+from pages.regions.cart_page import CartPage
 from pages.store_page import StorePage
 
 
@@ -18,3 +19,7 @@ class TestOrderProcessing:
         assert home_page.menu.amount == "65,00"
 
         home_page.menu.menu_pop_up().go_to_the_cart()
+
+        cart_page = CartPage(self.driver).wait_for_page_to_load()
+        cart_page.assert_item_data("Belt", "65.00")
+
