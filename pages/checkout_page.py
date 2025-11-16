@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as ec
 
 from pages.base_page import BasePage
 
@@ -13,6 +14,8 @@ class CheckoutPage(BasePage):
     _phone_number = (By.CSS_SELECTOR, "input[name='billing_phone']")
     _mail = (By.CSS_SELECTOR, "input[name='billing_email']")
     _buy_and_pay_button = (By.CSS_SELECTOR, "button[id='place_order']")
+    _payment_blocker = (By.CSS_SELECTOR, "div[id='payment'] div[class='blockUI blockOverlay']")
+    _success_message = (By.CSS_SELECTOR, "p[class*='thankyou-order-received']")
 
     @property
     def loaded(self):
@@ -47,7 +50,13 @@ class CheckoutPage(BasePage):
         return self
 
     def buy_and_pay(self):
-        self.find_element(*self._buy_and_pay_button).click()
+        self.wait.until(ec.invisibility_of_element_located(self._payment_blocker))
+        self.wait.until(ec.element_to_be_clickable(self._buy_and_pay_button)).click()
+
+    def verify_success_message(self):
+        message = self.wait.until(ec.visibility_of_element_located(self._success_message))
+        assert message.text == "Dziękujemy. Otrzymaliśmy Twoje zamówienie."
+
 
 
 

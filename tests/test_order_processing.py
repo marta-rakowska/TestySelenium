@@ -1,5 +1,6 @@
 import pytest
 
+from config import config
 from pages.checkout_page import CheckoutPage
 from pages.home_page import HomePage
 from pages.regions.cart_page import CartPage
@@ -7,6 +8,7 @@ from pages.store_page import StorePage
 
 
 @pytest.mark.usefixtures("driver")
+@pytest.mark.flaky(reruns=config.RERUN)
 class TestOrderProcessing:
     def test_order_product_as_a_guest(self, driver):
         home_page = HomePage(self.driver).open()
@@ -34,5 +36,6 @@ class TestOrderProcessing:
         checkout_page.fill_address("Test Street 33").fill_postal_code("33-333").fill_city("London")
         checkout_page.fill_phone_number("123456789").fill_email_address("john@test.com")
         checkout_page.buy_and_pay()
+        checkout_page.verify_success_message()
 
 
